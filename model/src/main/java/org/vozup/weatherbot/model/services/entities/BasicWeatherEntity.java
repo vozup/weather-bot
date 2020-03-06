@@ -12,6 +12,8 @@ public class BasicWeatherEntity {
     private String city;
     @Column(name = "REGION")
     private String region;
+    @Column(name = "DISTRICT")
+    private String district;
     @Column(name = "FULL_LOCATION")
     private String fullLocation;
     @Column(name = "URL")
@@ -21,17 +23,18 @@ public class BasicWeatherEntity {
     @Column(name = "MODIFIED_AT")
     private LocalDateTime modifiedAt;
 
-    public BasicWeatherEntity(String city, String region, String fullLocation,
+    public BasicWeatherEntity() {
+    }
+
+    public BasicWeatherEntity(String city, String region, String district, String fullLocation,
                               String url, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.city = city;
         this.region = region;
+        this.district = district;
         this.fullLocation = fullLocation;
         this.url = url;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
-    }
-
-    public BasicWeatherEntity() {
     }
 
     public Long getId() {
@@ -56,6 +59,14 @@ public class BasicWeatherEntity {
 
     public void setRegion(String region) {
         this.region = region;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
     }
 
     public String getFullLocation() {

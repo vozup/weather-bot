@@ -11,8 +11,8 @@ public class SinoptikEntity extends BasicWeatherEntity {
         super();
     }
 
-    public SinoptikEntity(String city, String region, String fullLocation,
-                          String url, LocalDateTime createdAt, LocalDateTime modifiedAt) {
-        super(city, region, fullLocation, url, createdAt, modifiedAt);
+    public SinoptikEntity(String city, String region, String district, String fullLocation, String url,
+                          LocalDateTime createdAt, LocalDateTime modifiedAt) {
+        super(city, region, district, fullLocation, url, createdAt, modifiedAt);
     }
 }

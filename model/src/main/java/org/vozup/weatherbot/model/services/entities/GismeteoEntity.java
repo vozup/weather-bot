@@ -11,8 +11,8 @@ public class GismeteoEntity extends BasicWeatherEntity {
         super();
     }
 
-    public GismeteoEntity(String city, String region, String fullLocation, String url,
+    public GismeteoEntity(String city, String region, String district, String fullLocation, String url,
                           LocalDateTime createdAt, LocalDateTime modifiedAt) {
-        super(city, region, fullLocation, url, createdAt, modifiedAt);
+        super(city, region, district, fullLocation, url, createdAt, modifiedAt);
     }
 }
