@@ -1,15 +1,22 @@
-package org.vozup.weatherbot.model.sites;
+package org.vozup.weatherbot.model.sites.gismeteo;
 
-public class DistrictRegionPair {
+public class DistrictRegionUrl {
     private String district;
     private String region;
+    private String url;
 
-    public DistrictRegionPair() {
+    public DistrictRegionUrl() {
     }
 
-    public DistrictRegionPair(String district, String region) {
+    public DistrictRegionUrl(String district, String region) {
         this.district = district;
         this.region = region;
+    }
+
+    public DistrictRegionUrl(String district, String region, String url) {
+        this.district = district;
+        this.region = region;
+        this.url = url;
     }
 
     public String getDistrict() {
@@ -26,6 +33,14 @@ public class DistrictRegionPair {
 
     public void setRegion(String region) {
         this.region = region;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Override

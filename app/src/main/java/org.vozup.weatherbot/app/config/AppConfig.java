@@ -1,8 +1,10 @@
 package org.vozup.weatherbot.app.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.PropertySource;
 import org.vozup.weatherbot.model.services.entities.GismeteoEntity;
 import org.vozup.weatherbot.model.services.entities.SinoptikEntity;
 import org.vozup.weatherbot.model.services.impl.GismeteoServiceImpl;
@@ -30,17 +32,21 @@ public class AppConfig {
     }
 
     @Configuration
+    @PropertySource(value = "customer.properties")
     public class WeatherFromSites {
+        @Value("${thread.count:6}")
+        private int threadCount;
+
         @Bean
         @Lazy
         public BasicCities gismeteoCities(BasicSiteService<GismeteoEntity> gismeteoService) {
-            return new GismeteoCities(gismeteoService);
+            return new GismeteoCities(gismeteoService, threadCount);
         }
 
         @Bean
         @Lazy
         public BasicCities sinoptikCities(BasicSiteService<SinoptikEntity> sinoptikService) {
-            return new SinoptikCities(sinoptikService);
+            return new SinoptikCities(sinoptikService, threadCount);
         }
     }
 

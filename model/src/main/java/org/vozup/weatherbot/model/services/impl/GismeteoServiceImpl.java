@@ -46,6 +46,11 @@ public class GismeteoServiceImpl implements BasicSiteService<GismeteoEntity> {
         return gismeteoRepo.findAllByDistrictEquals(district);
     }
 
+    @Override
+    public List<GismeteoEntity> findByCity(String city) {
+        return gismeteoRepo.findAllByCityEquals(city);
+    }
+
     public GismeteoRepo getGismeteoRepo() {
         return gismeteoRepo;
     }

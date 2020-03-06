@@ -46,6 +46,11 @@ public class SinoptikServiceImpl implements BasicSiteService<SinoptikEntity> {
         return sinoptikRepo.findAllByDistrictEquals(district);
     }
 
+    @Override
+    public List<SinoptikEntity> findByCity(String city) {
+        return sinoptikRepo.findAllByCityEquals(city);
+    }
+
     public SinoptikRepo getSinoptikRepo() {
         return sinoptikRepo;
     }

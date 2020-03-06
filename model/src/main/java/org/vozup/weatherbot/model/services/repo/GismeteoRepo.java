@@ -11,4 +11,6 @@ public interface GismeteoRepo extends JpaRepository<GismeteoEntity, Long> {
     List<GismeteoEntity> findAllByDistrictEquals(String district);
 
     List<GismeteoEntity> findAllByRegionEquals(String region);
+
+    List<GismeteoEntity> findAllByCityEquals(String city);
 }

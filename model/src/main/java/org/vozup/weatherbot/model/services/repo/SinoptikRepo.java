@@ -11,4 +11,6 @@ public interface SinoptikRepo extends JpaRepository<SinoptikEntity, Long> {
     List<SinoptikEntity> findAllByDistrictEquals(String district);
 
     List<SinoptikEntity> findAllByRegionEquals(String region);
+
+    List<SinoptikEntity> findAllByCityEquals(String city);
 }

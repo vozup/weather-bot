@@ -12,4 +12,6 @@ public interface BasicSiteService<T> {
     List<T> findAllByRegion(String region);
 
     List<T> findAllByDistrict(String district);
+
+    List<T> findByCity(String city);
 }
