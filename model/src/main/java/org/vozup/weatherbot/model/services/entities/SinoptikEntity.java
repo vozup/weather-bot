@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
-@Table(name = "SINOPTIK", schema = "schema")
+@Table(name = "SINOPTIK")
 @Entity
 public class SinoptikEntity extends BasicWeatherEntity {
     public SinoptikEntity() {

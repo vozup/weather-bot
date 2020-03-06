@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
-@Table(name = "GISMETEO", schema = "schema")
+@Table(name = "GISMETEO")
 @Entity
 public class GismeteoEntity extends BasicWeatherEntity {
     public GismeteoEntity() {
