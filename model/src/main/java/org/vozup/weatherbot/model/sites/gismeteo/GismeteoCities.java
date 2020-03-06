@@ -1,33 +1,35 @@
-package org.vozup.weatherbot.app.sites.gismeteo;
+package org.vozup.weatherbot.model.sites.gismeteo;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.vozup.weatherbot.app.sites.DistrictRegionPair;
 import org.vozup.weatherbot.model.services.entities.GismeteoEntity;
 import org.vozup.weatherbot.model.services.service.BasicSiteService;
+import org.vozup.weatherbot.model.sites.BasicCities;
+import org.vozup.weatherbot.model.sites.DistrictRegionPair;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-public class GismeteoCities {
+public class GismeteoCities implements BasicCities {
     private static Logger log = Logger.getLogger(GismeteoCities.class.getName());
 
     private HashMap<String, String> hrefAndRegion;
     private HashMap<DistrictRegionPair, String> hrefAndRegionExt;
     private final BasicSiteService<GismeteoEntity> gismeteoService;
 
-    @Autowired
     public GismeteoCities(BasicSiteService<GismeteoEntity> gismeteoService) {
         hrefAndRegion = new HashMap<>();
         hrefAndRegionExt = new HashMap<>();
         this.gismeteoService = gismeteoService;
+    }
 
-        initHrefAndRegion();
+    @Override
+    public void fillDb() {
+        log.info("Start filling DB Gismeteo");
         initAllCities(gismeteoService);
     }
 
@@ -35,7 +37,7 @@ public class GismeteoCities {
      * Получить области и соответствующие url
      */
     private void initHrefAndRegion() {
-        Document doc = null;
+        Document doc;
         try {
             doc = Jsoup.connect("https://www.gismeteo.ua/catalog/ukraine/").get();
 
@@ -53,7 +55,7 @@ public class GismeteoCities {
             }
             //Then we walk all region and creates map with region name, district name and district links
             hrefAndRegion.forEach((region, url) -> {
-                Document docExt = null;
+                Document docExt;
                 try {
                     docExt = Jsoup.connect(url).get();
                     Elements citiesInRegion = docExt.getElementsByClass("catalog_sides")
@@ -88,8 +90,10 @@ public class GismeteoCities {
      */
     //FIXME Update regex
     private void initAllCities(BasicSiteService<GismeteoEntity> gismeteoService) {
+        initHrefAndRegion();
+
         hrefAndRegionExt.forEach((districtRegion, url) -> {
-            Document doc = null;
+            Document doc;
             try {
                 doc = Jsoup.connect(url).get();
                 Elements citiesInRegion = doc.select(".catalog_block")

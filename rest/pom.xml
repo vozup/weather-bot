@@ -11,5 +11,14 @@
 
     <artifactId>rest</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.vozup.weatherbot</groupId>
+            <artifactId>model</artifactId>
+            <version>0.0.1</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
 
 </project>

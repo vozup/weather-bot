@@ -1,4 +1,4 @@
-package org.vozup.weatherbot.app.sites.sinoptik;
+package org.vozup.weatherbot.model.sites.sinoptik;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -6,17 +6,19 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.vozup.weatherbot.model.services.entities.SinoptikEntity;
 import org.vozup.weatherbot.model.services.service.BasicSiteService;
+import org.vozup.weatherbot.model.sites.BasicCities;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 /**
  * Класс для парсинга всех городов и url которые им соответствуют
  * с сайта sinoptik.ua
  */
-public class SinoptikCities {
-
+public class SinoptikCities implements BasicCities {
+    private Logger log = Logger.getLogger(this.getClass().getName());
     private String slash = "/";
 
     private HashMap<String, String> hrefAndRegion;
@@ -25,8 +27,11 @@ public class SinoptikCities {
     public SinoptikCities(BasicSiteService<SinoptikEntity> sinoptikService) {
         hrefAndRegion = new HashMap<>();
         this.sinoptikService = sinoptikService;
+    }
 
-        initHrefAndRegion();
+    @Override
+    public void fillDb() {
+        log.info("Start filling DB Sinoptik");
         initAllCities(sinoptikService);
     }
 
@@ -57,6 +62,8 @@ public class SinoptikCities {
      */
     //FIXME Update regex
     private void initAllCities(BasicSiteService<SinoptikEntity> sinoptikService) {
+        initHrefAndRegion();
+
         hrefAndRegion.forEach((region, url) -> {
             for (char ch = 'А'; ch < 'Я'; ch++) {
                 Document doc = null;

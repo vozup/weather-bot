@@ -2,8 +2,7 @@ package org.vozup.weatherbot.app.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.vozup.weatherbot.app.sites.gismeteo.GismeteoCities;
-import org.vozup.weatherbot.app.sites.sinoptik.SinoptikCities;
+import org.springframework.context.annotation.Lazy;
 import org.vozup.weatherbot.model.services.entities.GismeteoEntity;
 import org.vozup.weatherbot.model.services.entities.SinoptikEntity;
 import org.vozup.weatherbot.model.services.impl.GismeteoServiceImpl;
@@ -11,6 +10,9 @@ import org.vozup.weatherbot.model.services.impl.SinoptikServiceImpl;
 import org.vozup.weatherbot.model.services.repo.GismeteoRepo;
 import org.vozup.weatherbot.model.services.repo.SinoptikRepo;
 import org.vozup.weatherbot.model.services.service.BasicSiteService;
+import org.vozup.weatherbot.model.sites.BasicCities;
+import org.vozup.weatherbot.model.sites.gismeteo.GismeteoCities;
+import org.vozup.weatherbot.model.sites.sinoptik.SinoptikCities;
 
 @Configuration
 public class AppConfig {
@@ -30,12 +32,14 @@ public class AppConfig {
     @Configuration
     public class WeatherFromSites {
         @Bean
-        public GismeteoCities gismeteoCities(BasicSiteService<GismeteoEntity> gismeteoService) {
+        @Lazy
+        public BasicCities gismeteoCities(BasicSiteService<GismeteoEntity> gismeteoService) {
             return new GismeteoCities(gismeteoService);
         }
 
         @Bean
-        public SinoptikCities sinoptikCities(BasicSiteService<SinoptikEntity> sinoptikService) {
+        @Lazy
+        public BasicCities sinoptikCities(BasicSiteService<SinoptikEntity> sinoptikService) {
             return new SinoptikCities(sinoptikService);
         }
     }

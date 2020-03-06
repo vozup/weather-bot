@@ -1,4 +1,4 @@
-package org.vozup.weatherbot.app.sites;
+package org.vozup.weatherbot.model.sites;
 
 public class DistrictRegionPair {
     private String district;

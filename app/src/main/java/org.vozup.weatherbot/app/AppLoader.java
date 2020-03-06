@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication(scanBasePackages = {
         "org.vozup.weatherbot.app",
+        "org.vozup.weatherbot.rest"
 })
 @EnableJpaRepositories(basePackages = "org.vozup.weatherbot.model.services.repo")
 @EntityScan(basePackages = "org.vozup.weatherbot.model.services.entities")
