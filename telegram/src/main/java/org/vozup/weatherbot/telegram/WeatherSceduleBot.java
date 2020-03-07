@@ -11,6 +11,8 @@ import java.util.List;
 
 public class WeatherSceduleBot extends TelegramLongPollingBot {
     private List<BasicSiteService> services;
+    private String token;
+    private String botName;
 
     public WeatherSceduleBot(List<BasicSiteService> services) {
         super();
@@ -33,6 +35,10 @@ public class WeatherSceduleBot extends TelegramLongPollingBot {
                 }
             }
 
+            if (result.length() == 0) {
+                result.append("Такого города не найдено");
+            }
+
             SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
                     .setChatId(update.getMessage().getChatId())
                     .setText(result.toString());
@@ -46,11 +52,27 @@ public class WeatherSceduleBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "WeatherScheduleBot";
+        return this.botName;
     }
 
     @Override
     public String getBotToken() {
-        return "777039953:AAH6auyvRxd1CPN1XLXGwuXD667geYKaANs";
+        return this.token;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getBotName() {
+        return botName;
+    }
+
+    public void setBotName(String botName) {
+        this.botName = botName;
     }
 }
