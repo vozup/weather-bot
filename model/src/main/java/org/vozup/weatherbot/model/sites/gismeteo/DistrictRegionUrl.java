@@ -1,5 +1,8 @@
 package org.vozup.weatherbot.model.sites.gismeteo;
 
+/**
+ * Helping class where contain district< region and their link
+ */
 public class DistrictRegionUrl {
     private String district;
     private String region;

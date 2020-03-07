@@ -8,12 +8,15 @@ import org.vozup.weatherbot.model.sites.BasicCities;
 
 import java.util.List;
 
+/**
+ * Main rest controller
+ */
 @RestController
 public class MainRestController {
     private List<BasicCities> citiesList;
 
     @GetMapping("/update-db")
-    public ModelAndView updatingAlDb() {
+    public ModelAndView updatingAllDb() {
         for (BasicCities city : citiesList) {
             city.fillDb();
         }

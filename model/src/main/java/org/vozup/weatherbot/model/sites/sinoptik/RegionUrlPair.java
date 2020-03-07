@@ -1,5 +1,8 @@
 package org.vozup.weatherbot.model.sites.sinoptik;
 
+/**
+ * Helping class where contain region and their link
+ */
 public class RegionUrlPair {
     private String region;
     private String url;

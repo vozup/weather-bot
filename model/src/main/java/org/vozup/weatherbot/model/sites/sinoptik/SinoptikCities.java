@@ -18,8 +18,8 @@ import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 /**
- * Класс для парсинга всех городов и url которые им соответствуют
- * с сайта sinoptik.ua
+ * Class where we parsing cities
+ * and their links from sinoptik and save them in db
  */
 public class SinoptikCities implements BasicCities {
     private Logger log = Logger.getLogger(this.getClass().getName());
@@ -47,7 +47,7 @@ public class SinoptikCities implements BasicCities {
     }
 
     /**
-     * Получить области и соответствующие url
+     * Give regions and their links
      */
     private void initHrefAndRegion() {
         Document doc = null;
@@ -65,15 +65,17 @@ public class SinoptikCities implements BasicCities {
         }
     }
 
-    /**
-     * Получить города и соответствующие url
-     */
     //FIXME Update regex
     private void initAllCities() {
         initHrefAndRegion();
         multiThreadInit(hrefAndRegion);
     }
 
+    /**
+     * Multi thread filling DB
+     *
+     * @param hrefAndRegion list with info of regions and their links
+     */
     private void multiThreadInit(final List<RegionUrlPair> hrefAndRegion) {
         ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
         List<Runnable> tasks = new ArrayList<>();
@@ -96,7 +98,7 @@ public class SinoptikCities implements BasicCities {
                 log.info(this.getClass().getName() + " " + Thread.currentThread().getName() + " start");
                 for (RegionUrlPair pair : part) {
                     for (char ch = 'А'; ch < 'Я'; ch++) {
-                        Document doc = null;
+                        Document doc;
                         try {
                             doc = Jsoup.connect(pair.getUrl() + slash + ch).get();
                             Elements col4Cities = doc.select(".col4");

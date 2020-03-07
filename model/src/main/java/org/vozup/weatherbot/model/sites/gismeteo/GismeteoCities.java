@@ -18,6 +18,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
+/**
+ * Class where we parsing cities
+ * and their links from gismeteo and save them in db
+ */
 public class GismeteoCities implements BasicCities {
     private static Logger log = Logger.getLogger(GismeteoCities.class.getName());
 
@@ -45,7 +49,7 @@ public class GismeteoCities implements BasicCities {
     }
 
     /**
-     * Получить области и соответствующие url
+     * Give regions and their links
      */
     private void initHrefAndRegion() {
         Document doc;
@@ -97,16 +101,18 @@ public class GismeteoCities implements BasicCities {
         }
     }
 
-    /**
-     * Получить города и соответствующие url
-     */
     //FIXME Update regex
     private void initAllCities() {
         initHrefAndRegion();
-        multiThreadInit(hrefAndRegionExt);
+        multiThreadFillDb(hrefAndRegionExt);
     }
 
-    private void multiThreadInit(final List<DistrictRegionUrl> hrefAndRegionExt) {
+    /**
+     * Multi thread filling DB
+     *
+     * @param hrefAndRegionExt list with info of regions and their links
+     */
+    private void multiThreadFillDb(final List<DistrictRegionUrl> hrefAndRegionExt) {
         ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
         List<Runnable> tasks = new ArrayList<>();
 

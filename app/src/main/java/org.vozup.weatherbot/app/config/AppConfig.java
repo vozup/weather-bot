@@ -22,6 +22,12 @@ import org.vozup.weatherbot.telegram.WeatherSceduleBot;
 public class AppConfig {
     @Configuration
     public class ServiceConfig {
+        /**
+         * Creating service bean
+         *
+         * @param citiesHrefRepo repo
+         * @return service bean
+         */
         @Bean
         public BasicSiteService<CitiesHref> citiesHrefService(CitiesHrefRepo citiesHrefRepo) {
             return new CitiesHrefServiceImpl(citiesHrefRepo);
@@ -34,12 +40,22 @@ public class AppConfig {
         @Value("${thread.count:6}")
         private int threadCount;
 
+        /**
+         * Creating bean where we can get cities and their links from gismeteo
+         * @param siteService service
+         * @return GismeteoCities bean
+         */
         @Bean
         @Lazy
         public BasicCities gismeteoCities(BasicSiteService<CitiesHref> siteService) {
             return new GismeteoCities(siteService, threadCount);
         }
 
+        /**
+         * Creating bean where we can get cities and their links from sinoptik
+         * @param siteService service
+         * @return SinoptikCities bean
+         */
         @Bean
         @Lazy
         public BasicCities sinoptikCities(BasicSiteService<CitiesHref> siteService) {
@@ -61,8 +77,8 @@ public class AppConfig {
          * and add to them fields bot.token and bot.name
          * for correct registration
          *
-         * @param service
-         * @return
+         * @param service service
+         * @return BotSession
          */
         @Bean
         public BotSession initTelegramBot(BasicSiteService<CitiesHref> service) {
