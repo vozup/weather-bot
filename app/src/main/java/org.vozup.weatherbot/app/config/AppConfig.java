@@ -58,17 +58,41 @@ public class AppConfig {
     }
 
     @Configuration
+    @PropertySource("bot-settings.properties")
     public class TelegramApi {
+        @Value("${bot.token:default}")
+        private String botToken;
+        @Value("${bot.name:default}")
+        private String botName;
+
+        /**
+         * Register telegram bot
+         * add bot-settings.properties file to resources dir
+         * and add to them fields bot.token and bot.name
+         * for correct registration
+         *
+         * @param services
+         * @return
+         */
         @Bean
         public BotSession initTelegramBot(List<BasicSiteService> services) {
-            ApiContextInitializer.init();
+            if (botName.equals("default") || botToken.equals("default")) {
+                System.err.println("Please add bot-settings.properties file to resources dir");
+                System.err.println("And add to them fields bot.token and bot.name");
+                throw new IllegalArgumentException("Telegram botToken and botName is default");
+            }
 
+            ApiContextInitializer.init();
             TelegramBotsApi botsApi = new TelegramBotsApi();
 
             try {
                 WeatherSceduleBot bot = new WeatherSceduleBot(services);
+                bot.setBotName(botName);
+                bot.setToken(botToken);
+
                 return botsApi.registerBot(bot);
             } catch (TelegramApiException e) {
+                System.err.println("Telegram bot register error");
                 e.printStackTrace();
             }
 
