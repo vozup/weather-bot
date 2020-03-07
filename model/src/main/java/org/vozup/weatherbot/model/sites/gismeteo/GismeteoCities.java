@@ -4,6 +4,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.vozup.weatherbot.model.services.Sites;
 import org.vozup.weatherbot.model.services.entities.GismeteoEntity;
 import org.vozup.weatherbot.model.services.service.BasicSiteService;
 import org.vozup.weatherbot.model.sites.BasicCities;
@@ -142,6 +143,7 @@ public class GismeteoCities implements BasicCities {
                             gismeteoEntity.setFullLocation(city + " " + d);
                             gismeteoEntity.setUrl("https://www.gismeteo.ua" + el.attr("href"));
                             gismeteoEntity.setCreatedAt(LocalDateTime.now());
+                            gismeteoEntity.setSite(Sites.GISMETEO);
                             gismeteoService.save(gismeteoEntity);
                         }
                     } catch (IOException e) {

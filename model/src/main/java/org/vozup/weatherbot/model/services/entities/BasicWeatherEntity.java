@@ -1,5 +1,7 @@
 package org.vozup.weatherbot.model.services.entities;
 
+import org.vozup.weatherbot.model.services.Sites;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -18,6 +20,9 @@ public class BasicWeatherEntity {
     private String fullLocation;
     @Column(name = "URL")
     private String url;
+    @Column(name = "SITES")
+    @Enumerated(EnumType.STRING)
+    private Sites site;
     @Column(name = "CREATED_AT")
     private LocalDateTime createdAt;
     @Column(name = "MODIFIED_AT")
@@ -26,13 +31,14 @@ public class BasicWeatherEntity {
     public BasicWeatherEntity() {
     }
 
-    public BasicWeatherEntity(String city, String region, String district, String fullLocation,
-                              String url, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    public BasicWeatherEntity(String city, String region, String district, String fullLocation, String url,
+                              Sites site, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.city = city;
         this.region = region;
         this.district = district;
         this.fullLocation = fullLocation;
         this.url = url;
+        this.site = site;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
@@ -99,5 +105,13 @@ public class BasicWeatherEntity {
 
     public void setModifiedAt(LocalDateTime modifiedAt) {
         this.modifiedAt = modifiedAt;
+    }
+
+    public Sites getSite() {
+        return site;
+    }
+
+    public void setSite(Sites site) {
+        this.site = site;
     }
 }

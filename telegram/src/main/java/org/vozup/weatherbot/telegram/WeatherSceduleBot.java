@@ -29,7 +29,8 @@ public class WeatherSceduleBot extends TelegramLongPollingBot {
                 List<? extends BasicWeatherEntity> cities = siteService.findByCity(update.getMessage().getText());
 
                 for (BasicWeatherEntity city : cities) {
-                    result.append(city.getCity()).append(" ")
+                    result.append(city.getSite()).append(" ")
+                            .append(city.getCity()).append(" ")
                             .append(city.getDistrict()).append(" ")
                             .append(city.getRegion()).append("\n");
                 }

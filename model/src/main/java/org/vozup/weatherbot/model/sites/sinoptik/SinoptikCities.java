@@ -4,6 +4,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.vozup.weatherbot.model.services.Sites;
 import org.vozup.weatherbot.model.services.entities.SinoptikEntity;
 import org.vozup.weatherbot.model.services.service.BasicSiteService;
 import org.vozup.weatherbot.model.sites.BasicCities;
@@ -111,6 +112,7 @@ public class SinoptikCities implements BasicCities {
                                 sinoptikEntity.setFullLocation(city + " " + district + " " + pair.getRegion());
                                 sinoptikEntity.setUrl("https:" + el.select("a").attr("href"));
                                 sinoptikEntity.setCreatedAt(LocalDateTime.now());
+                                sinoptikEntity.setSite(Sites.SINOPTIK);
                                 sinoptikService.save(sinoptikEntity);
                             }
                         } catch (IOException e) {
