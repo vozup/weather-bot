@@ -4,19 +4,20 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.vozup.weatherbot.model.services.entities.BasicWeatherEntity;
+import org.vozup.weatherbot.model.services.Sites;
+import org.vozup.weatherbot.model.services.entities.CitiesHref;
 import org.vozup.weatherbot.model.services.service.BasicSiteService;
 
 import java.util.List;
 
 public class WeatherSceduleBot extends TelegramLongPollingBot {
-    private List<BasicSiteService> services;
+    private BasicSiteService<CitiesHref> service;
     private String token;
     private String botName;
 
-    public WeatherSceduleBot(List<BasicSiteService> services) {
+    public WeatherSceduleBot(BasicSiteService<CitiesHref> service) {
         super();
-        this.services = services;
+        this.service = service;
     }
 
     @Override
@@ -24,16 +25,13 @@ public class WeatherSceduleBot extends TelegramLongPollingBot {
         // We check if the update has a message and the message has text
         if (update.hasMessage() && update.getMessage().hasText()) {
             StringBuilder result = new StringBuilder();
+            List<CitiesHref> cities = service.findByCity(update.getMessage().getText(), Sites.SINOPTIK);
 
-            for (BasicSiteService siteService : services) {
-                List<? extends BasicWeatherEntity> cities = siteService.findByCity(update.getMessage().getText());
-
-                for (BasicWeatherEntity city : cities) {
-                    result.append(city.getSite()).append(" ")
-                            .append(city.getCity()).append(" ")
-                            .append(city.getDistrict()).append(" ")
-                            .append(city.getRegion()).append("\n");
-                }
+            for (CitiesHref citiesHref : cities) {
+                result.append(citiesHref.getSite()).append(" ")
+                        .append(citiesHref.getCity()).append(" ")
+                        .append(citiesHref.getDistrict()).append(" ")
+                        .append(citiesHref.getRegion()).append("\n");
             }
 
             if (result.length() == 0) {

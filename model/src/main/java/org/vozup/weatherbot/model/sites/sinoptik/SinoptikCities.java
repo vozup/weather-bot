@@ -5,7 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.vozup.weatherbot.model.services.Sites;
-import org.vozup.weatherbot.model.services.entities.SinoptikEntity;
+import org.vozup.weatherbot.model.services.entities.CitiesHref;
 import org.vozup.weatherbot.model.services.service.BasicSiteService;
 import org.vozup.weatherbot.model.sites.BasicCities;
 
@@ -26,12 +26,12 @@ public class SinoptikCities implements BasicCities {
     private String slash = "/";
 
     private List<RegionUrlPair> hrefAndRegion;
-    private final BasicSiteService<SinoptikEntity> sinoptikService;
+    private final BasicSiteService<CitiesHref> siteService;
     private int threadCount;
 
-    public SinoptikCities(BasicSiteService<SinoptikEntity> sinoptikService, int threadCount) {
+    public SinoptikCities(BasicSiteService<CitiesHref> siteService, int threadCount) {
         hrefAndRegion = new ArrayList<>();
-        this.sinoptikService = sinoptikService;
+        this.siteService = siteService;
 
         if (threadCount <= 0) {
             this.threadCount = 6;
@@ -43,7 +43,7 @@ public class SinoptikCities implements BasicCities {
     @Override
     public void fillDb() {
         log.info("Start filling DB Sinoptik");
-        initAllCities(sinoptikService);
+        initAllCities();
     }
 
     /**
@@ -69,7 +69,7 @@ public class SinoptikCities implements BasicCities {
      * Получить города и соответствующие url
      */
     //FIXME Update regex
-    private void initAllCities(BasicSiteService<SinoptikEntity> sinoptikService) {
+    private void initAllCities() {
         initHrefAndRegion();
         multiThreadInit(hrefAndRegion);
     }
@@ -102,18 +102,18 @@ public class SinoptikCities implements BasicCities {
                             Elements col4Cities = doc.select(".col4");
 
                             for (Element el : col4Cities.select("li")) {
-                                SinoptikEntity sinoptikEntity = new SinoptikEntity();
+                                CitiesHref citiesHref = new CitiesHref();
                                 String city = el.select("a").text();
                                 city = city.replaceAll("^[а-я]+\\s", "");
-                                sinoptikEntity.setCity(city);
+                                citiesHref.setCity(city);
                                 String district = el.select("span").text();
-                                sinoptikEntity.setRegion(pair.getRegion());
-                                sinoptikEntity.setDistrict(district);
-                                sinoptikEntity.setFullLocation(city + " " + district + " " + pair.getRegion());
-                                sinoptikEntity.setUrl("https:" + el.select("a").attr("href"));
-                                sinoptikEntity.setCreatedAt(LocalDateTime.now());
-                                sinoptikEntity.setSite(Sites.SINOPTIK);
-                                sinoptikService.save(sinoptikEntity);
+                                citiesHref.setRegion(pair.getRegion());
+                                citiesHref.setDistrict(district);
+                                citiesHref.setFullLocation(city + " " + district + " " + pair.getRegion());
+                                citiesHref.setUrl("https:" + el.select("a").attr("href"));
+                                citiesHref.setCreatedAt(LocalDateTime.now());
+                                citiesHref.setSite(Sites.SINOPTIK);
+                                siteService.save(citiesHref);
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -129,9 +129,5 @@ public class SinoptikCities implements BasicCities {
         }
 
         executorService.shutdown();
-    }
-
-    public BasicSiteService<SinoptikEntity> getSinoptikService() {
-        return sinoptikService;
     }
 }

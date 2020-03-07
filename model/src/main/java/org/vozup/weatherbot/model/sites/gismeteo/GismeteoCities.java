@@ -5,7 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.vozup.weatherbot.model.services.Sites;
-import org.vozup.weatherbot.model.services.entities.GismeteoEntity;
+import org.vozup.weatherbot.model.services.entities.CitiesHref;
 import org.vozup.weatherbot.model.services.service.BasicSiteService;
 import org.vozup.weatherbot.model.sites.BasicCities;
 
@@ -23,13 +23,13 @@ public class GismeteoCities implements BasicCities {
 
     private HashMap<String, String> hrefAndRegion;
     private List<DistrictRegionUrl> hrefAndRegionExt;
-    private final BasicSiteService<GismeteoEntity> gismeteoService;
+    private BasicSiteService<CitiesHref> siteService;
     private int threadCount;
 
-    public GismeteoCities(BasicSiteService<GismeteoEntity> gismeteoService, int threadCount) {
+    public GismeteoCities(BasicSiteService<CitiesHref> siteService, int threadCount) {
         hrefAndRegion = new HashMap<>();
         hrefAndRegionExt = new ArrayList<>();
-        this.gismeteoService = gismeteoService;
+        this.siteService = siteService;
 
         if (threadCount <= 0) {
             this.threadCount = 6;
@@ -41,7 +41,7 @@ public class GismeteoCities implements BasicCities {
     @Override
     public void fillDb() {
         log.info("Start filling DB Gismeteo");
-        initAllCities(gismeteoService);
+        initAllCities();
     }
 
     /**
@@ -101,7 +101,7 @@ public class GismeteoCities implements BasicCities {
      * Получить города и соответствующие url
      */
     //FIXME Update regex
-    private void initAllCities(BasicSiteService<GismeteoEntity> gismeteoService) {
+    private void initAllCities() {
         initHrefAndRegion();
         multiThreadInit(hrefAndRegionExt);
     }
@@ -135,16 +135,16 @@ public class GismeteoCities implements BasicCities {
                                 .select("a");
 
                         for (Element el : citiesInRegion) {
-                            GismeteoEntity gismeteoEntity = new GismeteoEntity();
+                            CitiesHref citiesHref = new CitiesHref();
                             String city = el.text();
-                            gismeteoEntity.setCity(city);
-                            gismeteoEntity.setRegion(d.getRegion());
-                            gismeteoEntity.setDistrict(d.getDistrict());
-                            gismeteoEntity.setFullLocation(city + " " + d);
-                            gismeteoEntity.setUrl("https://www.gismeteo.ua" + el.attr("href"));
-                            gismeteoEntity.setCreatedAt(LocalDateTime.now());
-                            gismeteoEntity.setSite(Sites.GISMETEO);
-                            gismeteoService.save(gismeteoEntity);
+                            citiesHref.setCity(city);
+                            citiesHref.setRegion(d.getRegion());
+                            citiesHref.setDistrict(d.getDistrict());
+                            citiesHref.setFullLocation(city + " " + d);
+                            citiesHref.setUrl("https://www.gismeteo.ua" + el.attr("href"));
+                            citiesHref.setCreatedAt(LocalDateTime.now());
+                            citiesHref.setSite(Sites.GISMETEO);
+                            siteService.save(citiesHref);
                         }
                     } catch (IOException e) {
                         log.warning("initAllCities error");
@@ -160,9 +160,5 @@ public class GismeteoCities implements BasicCities {
         }
 
         executorService.shutdown();
-    }
-
-    public BasicSiteService<GismeteoEntity> getGismeteoService() {
-        return gismeteoService;
     }
 }

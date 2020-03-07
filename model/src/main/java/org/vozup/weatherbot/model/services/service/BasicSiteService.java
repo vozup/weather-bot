@@ -1,5 +1,7 @@
 package org.vozup.weatherbot.model.services.service;
 
+import org.vozup.weatherbot.model.services.Sites;
+
 import java.util.List;
 
 public interface BasicSiteService<T> {
@@ -14,4 +16,10 @@ public interface BasicSiteService<T> {
     List<T> findAllByDistrict(String district);
 
     List<T> findByCity(String city);
+
+    List<T> findAllByRegion(String region, Sites site);
+
+    List<T> findAllByDistrict(String district, Sites site);
+
+    List<T> findByCity(String city, Sites site);
 }

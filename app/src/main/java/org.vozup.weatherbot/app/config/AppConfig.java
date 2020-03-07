@@ -9,32 +9,22 @@ import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.BotSession;
-import org.vozup.weatherbot.model.services.entities.GismeteoEntity;
-import org.vozup.weatherbot.model.services.entities.SinoptikEntity;
-import org.vozup.weatherbot.model.services.impl.GismeteoServiceImpl;
-import org.vozup.weatherbot.model.services.impl.SinoptikServiceImpl;
-import org.vozup.weatherbot.model.services.repo.GismeteoRepo;
-import org.vozup.weatherbot.model.services.repo.SinoptikRepo;
+import org.vozup.weatherbot.model.services.entities.CitiesHref;
+import org.vozup.weatherbot.model.services.impl.CitiesHrefServiceImpl;
+import org.vozup.weatherbot.model.services.repo.CitiesHrefRepo;
 import org.vozup.weatherbot.model.services.service.BasicSiteService;
 import org.vozup.weatherbot.model.sites.BasicCities;
 import org.vozup.weatherbot.model.sites.gismeteo.GismeteoCities;
 import org.vozup.weatherbot.model.sites.sinoptik.SinoptikCities;
 import org.vozup.weatherbot.telegram.WeatherSceduleBot;
 
-import java.util.List;
-
 @Configuration
 public class AppConfig {
     @Configuration
     public class ServiceConfig {
         @Bean
-        public BasicSiteService<GismeteoEntity> gismeteoService(GismeteoRepo gismeteoRepo) {
-            return new GismeteoServiceImpl(gismeteoRepo);
-        }
-
-        @Bean
-        public BasicSiteService<SinoptikEntity> sinoptikService(SinoptikRepo sinoptikRepo) {
-            return new SinoptikServiceImpl(sinoptikRepo);
+        public BasicSiteService<CitiesHref> citiesHrefService(CitiesHrefRepo citiesHrefRepo) {
+            return new CitiesHrefServiceImpl(citiesHrefRepo);
         }
     }
 
@@ -46,14 +36,14 @@ public class AppConfig {
 
         @Bean
         @Lazy
-        public BasicCities gismeteoCities(BasicSiteService<GismeteoEntity> gismeteoService) {
-            return new GismeteoCities(gismeteoService, threadCount);
+        public BasicCities gismeteoCities(BasicSiteService<CitiesHref> siteService) {
+            return new GismeteoCities(siteService, threadCount);
         }
 
         @Bean
         @Lazy
-        public BasicCities sinoptikCities(BasicSiteService<SinoptikEntity> sinoptikService) {
-            return new SinoptikCities(sinoptikService, threadCount);
+        public BasicCities sinoptikCities(BasicSiteService<CitiesHref> siteService) {
+            return new SinoptikCities(siteService, threadCount);
         }
     }
 
@@ -71,11 +61,11 @@ public class AppConfig {
          * and add to them fields bot.token and bot.name
          * for correct registration
          *
-         * @param services
+         * @param service
          * @return
          */
         @Bean
-        public BotSession initTelegramBot(List<BasicSiteService> services) {
+        public BotSession initTelegramBot(BasicSiteService<CitiesHref> service) {
             if (botName.equals("default") || botToken.equals("default")) {
                 System.err.println("Please add bot-settings.properties file to resources dir");
                 System.err.println("And add to them fields bot.token and bot.name");
@@ -86,7 +76,7 @@ public class AppConfig {
             TelegramBotsApi botsApi = new TelegramBotsApi();
 
             try {
-                WeatherSceduleBot bot = new WeatherSceduleBot(services);
+                WeatherSceduleBot bot = new WeatherSceduleBot(service);
                 bot.setBotName(botName);
                 bot.setToken(botToken);
 
