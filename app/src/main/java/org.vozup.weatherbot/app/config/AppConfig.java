@@ -5,6 +5,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
+import org.telegram.telegrambots.ApiContextInitializer;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.generics.BotSession;
 import org.vozup.weatherbot.model.services.entities.GismeteoEntity;
 import org.vozup.weatherbot.model.services.entities.SinoptikEntity;
 import org.vozup.weatherbot.model.services.impl.GismeteoServiceImpl;
@@ -15,6 +19,9 @@ import org.vozup.weatherbot.model.services.service.BasicSiteService;
 import org.vozup.weatherbot.model.sites.BasicCities;
 import org.vozup.weatherbot.model.sites.gismeteo.GismeteoCities;
 import org.vozup.weatherbot.model.sites.sinoptik.SinoptikCities;
+import org.vozup.weatherbot.telegram.WeatherSceduleBot;
+
+import java.util.List;
 
 @Configuration
 public class AppConfig {
@@ -47,6 +54,26 @@ public class AppConfig {
         @Lazy
         public BasicCities sinoptikCities(BasicSiteService<SinoptikEntity> sinoptikService) {
             return new SinoptikCities(sinoptikService, threadCount);
+        }
+    }
+
+    @Configuration
+    public class TelegramApi {
+        @Bean
+        public BotSession initTelegramBot(List<BasicSiteService> services) {
+            ApiContextInitializer.init();
+
+            TelegramBotsApi botsApi = new TelegramBotsApi();
+
+            try {
+                WeatherSceduleBot bot = new WeatherSceduleBot(services);
+                return botsApi.registerBot(bot);
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+
+            System.err.println("Telegram bot register error");
+            return null;
         }
     }
 

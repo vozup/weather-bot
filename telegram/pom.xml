@@ -17,6 +17,13 @@
             <artifactId>telegrambots</artifactId>
             <version>${telegrambots.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.vozup.weatherbot</groupId>
+            <artifactId>model</artifactId>
+            <version>0.0.1</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
 
