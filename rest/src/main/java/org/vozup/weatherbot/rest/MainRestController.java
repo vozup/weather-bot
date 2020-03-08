@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-import org.vozup.weatherbot.model.sites.BasicCities;
+import org.vozup.weatherbot.model.BasicCities;
 
 import java.util.List;
 

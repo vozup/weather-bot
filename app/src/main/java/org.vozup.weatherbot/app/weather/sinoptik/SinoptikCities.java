@@ -1,13 +1,13 @@
-package org.vozup.weatherbot.model.sites.sinoptik;
+package org.vozup.weatherbot.app.weather.sinoptik;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.vozup.weatherbot.model.BasicCities;
 import org.vozup.weatherbot.model.services.Sites;
 import org.vozup.weatherbot.model.services.entities.CitiesHref;
 import org.vozup.weatherbot.model.services.service.BasicSiteService;
-import org.vozup.weatherbot.model.sites.BasicCities;
 
 import java.io.IOException;
 import java.time.LocalDateTime;

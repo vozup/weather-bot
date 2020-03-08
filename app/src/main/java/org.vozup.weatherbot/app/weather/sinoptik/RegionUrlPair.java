@@ -1,4 +1,4 @@
-package org.vozup.weatherbot.model.sites.sinoptik;
+package org.vozup.weatherbot.app.weather.sinoptik;
 
 /**
  * Helping class where contain region and their link

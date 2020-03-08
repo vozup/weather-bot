@@ -1,4 +1,4 @@
-package org.vozup.weatherbot.model.sites;
+package org.vozup.weatherbot.model;
 
 public interface BasicCities {
     void fillDb();

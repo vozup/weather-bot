@@ -9,13 +9,13 @@ import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.BotSession;
+import org.vozup.weatherbot.app.weather.gismeteo.GismeteoCities;
+import org.vozup.weatherbot.app.weather.sinoptik.SinoptikCities;
+import org.vozup.weatherbot.model.BasicCities;
 import org.vozup.weatherbot.model.services.entities.CitiesHref;
 import org.vozup.weatherbot.model.services.impl.CitiesHrefServiceImpl;
 import org.vozup.weatherbot.model.services.repo.CitiesHrefRepo;
 import org.vozup.weatherbot.model.services.service.BasicSiteService;
-import org.vozup.weatherbot.model.sites.BasicCities;
-import org.vozup.weatherbot.model.sites.gismeteo.GismeteoCities;
-import org.vozup.weatherbot.model.sites.sinoptik.SinoptikCities;
 import org.vozup.weatherbot.telegram.WeatherSceduleBot;
 
 @Configuration

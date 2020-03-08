@@ -1,4 +1,4 @@
-package org.vozup.weatherbot.model.sites.gismeteo;
+package org.vozup.weatherbot.app.weather.gismeteo;
 
 /**
  * Helping class where contain district< region and their link
